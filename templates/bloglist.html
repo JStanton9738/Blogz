@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <h1>Build-A-Blog</h1>
+    <h1>Blog Archive</h1>
 
     {% if blogs|length == 0 %}
     <h2>No blog posted.</h2>
@@ -10,8 +10,9 @@
 
     {% for blog in blogs %}
 
-    <h2><a href="/bloglist?id={{blog.id}}">{{blog.title}}</h2>
-    <p>{{blog.body}}</p>
+    <h2><a href="/bloglist?id={{blog.id}}">{{blog.title}}</a></h2>
+    <p class="entry">{{blog.post}}</p>
+    <p class="byline">Authored by <a href="./blog?owner_id={{blog.owner_id}}">{{blog.owner.username}}</a></p>
     <hr>
 
     {% endfor %}
