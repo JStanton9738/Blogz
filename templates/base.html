@@ -3,6 +3,7 @@
     <head>
         <title>{{title}}</title>
         <title>{{body}}</title>
+        
         <style>
             .error {color:red;}
         </style>
@@ -17,15 +18,28 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/login">Login</a></li>
                 <li><a href="/signup">User Signup</a></li>                
-                
+                <li><a href="/blog">Main Blog List</a></li>
                 <li><a href="/newpost">Add New Blog</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
+       
     </header>
+
+
 
     {% block content %}
     {% endblock %}
 
 </body>
+{% with messages = get_flashed_messages() %}
+<ul>
+{% for message in messages %}
+    <li class="error">{{message}}</li>
+    <style>
+        .error {color:red;}
+    </style>
+{% endfor %}
+</ul>
+{% endwith %}
 </html>

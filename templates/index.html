@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<h1> Blog Archives </h1>
+<h1> Blogger Archive </h1>
     <div>
-        <ul>
             {% for user in list_all_users %}
-            <li><a href="./blog?owner_id={{user.id}}">{{user.username}}</a></li>
-        {% endfor %}
+        <ul>            
+            <li><a href="/blog?user={{user.id}}">{{user.username}}</a></li>        
         </ul>
+        {% endfor %}
     </div>
 
     

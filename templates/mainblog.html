@@ -4,15 +4,15 @@
 
 <h1>Add A Blog</h1>
 
-<form action="/newpost" method='POST'>
+<form method='POST'>
     <label> 
-        <span class="form_label"> New Blog Title:</span>
+        New Blog Title:
         <input type="text" name='title_entry' value="{{title}}" />
     </label>
     <p class="error"> {{title_error}} </p>
     
     <label>
-        <span class="form_label"> New Blog:</span>
+        New Blog:
         <textarea name="body_entry" rows="5" cols="50" value="{{body}}"></textarea>
     </label>
     <p class="error"> {{body_error}} </p>      

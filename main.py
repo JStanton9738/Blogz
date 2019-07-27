@@ -31,11 +31,11 @@ class User(db.Model):
         self.username = username
         self.password = password
 
-""" @app.before_request
+@app.before_request
 def require_login():
-    allowed_routes = ['login', 'index', 'signup', 'bloglist']
+    allowed_routes = ['login', 'index', 'add_user', 'logout', 'bloglist', 'login_user']
     if request.endpoint not in allowed_routes and 'username' not in session:
-        return redirect('/login')  """
+        return redirect('/login') 
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -46,6 +46,15 @@ def index():
 def bloglist():
     post_id = request.args.get('id')
     ind_user = request.args.get('owner_id')
+    blog_id = request.args.get('id')
+
+    if blog_id == None:
+        blogs = Blog.query.all()    
+        return render_template('bloglist.html', blogs=blogs)
+
+    else:          
+        blog = Blog.query.get(blog_id)
+        return render_template('singleentry.html', blog=blog)
     
     if (post_id):
         ind_post = Blog.query.get(post_id)
@@ -58,7 +67,7 @@ def bloglist():
 
         else:
             all_blogs = Blog.query.all()
-            return render_template('bloglist.html', posts=all_blogs)
+            return render_template('bloglist.html', blogs=all_blogs)
 
 
 
@@ -76,11 +85,11 @@ def login_user():
         
         if not username and not password:
             flash('Create account first.', 'error')
-            return render_template('/signup')
+            return render_template('login.html')
 
         if not username:
             flash('Username cannot be blank.', 'error')
-            return redirect('/login')
+            return render_template('login.html')
 
         if not password:
             flash('Password cannot be blank.', 'error')
@@ -88,7 +97,7 @@ def login_user():
 
         if not username:
             flash('Username does not exist.', 'error')
-            return redirect('/login')
+            return render_template('login.html')
 
         if password != password:
             flash('Password invalid.', 'error')
@@ -153,37 +162,35 @@ def add_user():
         return render_template('signup.html', username=username, username_error=username_error, password=password, validate_password=validate_password, validate_password_error=validate_password_error)
 
 @app.route('/newpost', methods=['POST', 'GET'])
-def newpost():
-    title = ''
-    body = ''
-    title_error = ''
-    body_error = ''
-    owner = User.query.filter_by(username=session['username']).first()
+def newpost():  
 
     if request.method == 'POST':   
         title = request.form['title_entry']
         body = request.form['body_entry'] 
+        owner = User.query.filter_by(username=session['username']).first()
+        title_error = ''
+        body_error = ''
         
-        if title == '':
+        if not title:
             title_error = 'Please enter blog title'
 
-        if body == '':
+        if not body:
             body_error = 'Please enter blog text' 
 
-        if title_error == '' and body_error == '':
+        if not title_error and not body_error:
             new_blog = Blog(title, body, owner)
             db.session.add(new_blog)
             db.session.commit()
             blog_id = Blog.query.order_by(Blog.id.desc()).first()
-            user = owner
-            
-            return redirect('/blog?id={}&user={}'.format(blog_id.id, user.username))
+            user = owner            
+            return redirect('/blog?id={}'.format(new_blog.id))
 
-    else:
-        return render_template('mainblog.html', title=title, body=body, title_error=title_error, body_error=body_error, owner=owner)
+        else:
+            return render_template('mainblog.html', title=title, body=body, title_error=title_error, body_error=body_error, owner=owner)
 
+    return render_template('mainblog.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST', 'GET'])
 def logout():
     del session['username']
     return redirect('/blog')

@@ -7,16 +7,19 @@
         <label>
             <span class="form_label">Username: </span>
             <input name="username" type="text" value='{{username}}' />
+            <span class="error">{{username_error}}</span>
         </label>
         <br> <br>
         <label>
             <span class="form_label">Password: </span>
             <input name="password" type="password" value='{{password}}' />
+            <span class="error">{{password_error}}</span>
         </label>
         <br> <br>
         <label>
             <span class="form_label"> Validate Password: </span>
             <input name="validate_password" type="password" value='{{validate_password}}' />
+            <span class="error">{{validate_password_error}}</span>
         </label>
         <br> <br>
         <input class="submit" type="submit" value="Create Account" />
