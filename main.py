@@ -40,34 +40,24 @@ def require_login():
 @app.route('/', methods=['POST', 'GET'])
 def index():
     users = User.query.all()
-    return render_template('index.html', list_all_users=users)
+    return render_template('index.html', title='Home', users=users)
 
 @app.route('/blog', methods=['POST', 'GET'])
 def bloglist():
-    post_id = request.args.get('id')
-    ind_user = request.args.get('owner_id')
+    ind_user = request.args.get('user')
     blog_id = request.args.get('id')
 
-    if blog_id == None:
+    if blog_id == None and ind_user == None:
         blogs = Blog.query.all()    
-        return render_template('bloglist.html', blogs=blogs)
+        return render_template('bloglist.html', blogs=blogs, title='Blog Archive')
 
-    else:          
+    if blog_id:          
         blog = Blog.query.get(blog_id)
-        return render_template('singleentry.html', blog=blog)
-    
-    if (post_id):
-        ind_post = Blog.query.get(post_id)
-        return render_template('singleentry.html', blog=ind_post)
+        return render_template('singleentry.html', blog=blog, title='Individual Blog Entries')
 
-    else:
-        if (ind_user):
-            ind_posts = Blog.query.filter_by(owner_id=ind_user)
-            return render_template('singleUser.html', posts=ind_posts)
-
-        else:
-            all_blogs = Blog.query.all()
-            return render_template('bloglist.html', blogs=all_blogs)
+    if ind_user:
+        user = User.query.get(ind_user)
+        return render_template('singleUser.html', user=user, title='Blog Posts')
 
 
 
@@ -181,14 +171,13 @@ def newpost():
             new_blog = Blog(title, body, owner)
             db.session.add(new_blog)
             db.session.commit()
-            blog_id = Blog.query.order_by(Blog.id.desc()).first()
-            user = owner            
+                      
             return redirect('/blog?id={}'.format(new_blog.id))
 
         else:
             return render_template('mainblog.html', title=title, body=body, title_error=title_error, body_error=body_error, owner=owner)
 
-    return render_template('mainblog.html')
+    return render_template('mainblog.html', title=title)
 
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
