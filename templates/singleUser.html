@@ -6,9 +6,9 @@
 
     <div>
     {% for blog in blogs %}
-        <h2><a href="./blog?id={{blog.id}}"></a></h2>
-        <p class="entry">{{blog.post}}</p>
-        <p class="byline">Written by <a href="./blog?user={{user_id}}">{{user.username}}</a></p>
+        <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
+        <p class="entry">{{blog.body}}</p>
+        <p class="byline">Written by <a href="/blog?user={{user.id}}">{{user.username}}</a></p>
         <hr>
     
     {% endfor %}

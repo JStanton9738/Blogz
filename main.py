@@ -53,12 +53,12 @@ def bloglist():
 
     if blog_id:          
         blog = Blog.query.get(blog_id)
-        return render_template('bloglist.html', blog=blog, title='Individual Blog Entries')
+        return render_template('singleentry.html', blog=blog, title='Individual Blog Entries')
 
     if ind_user:
-        blogs = Blog.query.all()    
         user = User.query.get(ind_user)
-        return render_template('singleUser.html', blogs=blogs, user=user, title='Blog Posts')
+        blogs = Blog.query.filter_by(owner_id=user.id).first()    
+        return render_template('singleUser.html', blog=blogs, user=user, title='Blog Posts')
 
 
 
@@ -178,7 +178,7 @@ def newpost():
         else:
             return render_template('mainblog.html', title=title, body=body, title_error=title_error, body_error=body_error, owner=owner)
 
-    return render_template('mainblog.html', title=title)
+    return render_template('mainblog.html')
 
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
