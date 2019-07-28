@@ -57,7 +57,7 @@ def bloglist():
 
     if ind_user:
         user = User.query.get(ind_user)
-        blogs = Blog.query.filter_by(owner_id=user.id).first()    
+        blogs = Blog.query.filter_by(owner_id=user.id)   
         return render_template('singleUser.html', blog=blogs, user=user, title='Blog Posts')
 
 
