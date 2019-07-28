@@ -53,7 +53,7 @@ def bloglist():
 
     if blog_id:          
         blog = Blog.query.get(blog_id)
-        return render_template('singleentry.html', blog=blog, title='Individual Blog Entries')
+        return render_template('bloglist.html', blog=blog, title='Individual Blog Entries')
 
     if ind_user:
         user = User.query.get(ind_user)
