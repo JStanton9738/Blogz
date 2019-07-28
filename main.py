@@ -56,8 +56,9 @@ def bloglist():
         return render_template('bloglist.html', blog=blog, title='Individual Blog Entries')
 
     if ind_user:
+        blogs = Blog.query.all()    
         user = User.query.get(ind_user)
-        return render_template('singleUser.html', user=user, title='Blog Posts')
+        return render_template('singleUser.html', blogs=blogs, user=user, title='Blog Posts')
 
 
 
